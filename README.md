@@ -8,7 +8,7 @@ In the project directory, you can run:
 
 ### `yarn start`
 
-important: please run 'yarn install' to install all dependencies before run this script
+important: please run 'yarn install' to install all dependencies before run this script.\
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
