@@ -13,6 +13,7 @@ const Home = (props) => {
   const history = useHistory()
 
   useEffect(() => {
+    // parse page number from url
     const parsed = queryString.parse(props.location.search);
     fetchData((parsed.p)?parseInt(parsed.p):1)
   },[props.location.search])
@@ -20,6 +21,7 @@ const Home = (props) => {
   const fetchData = async (num) => {
     setLoading(true)
     setPage(num)
+    // get data stories from api
     await newsStore.getStories(num)
     if (newsStore.state === 'done_get_stories') {
       setLoading(false)
@@ -35,7 +37,6 @@ const Home = (props) => {
 
   return (
     <div>
-        
         {loading &&
           <div className="m-auto w-12 pt-52">
           <Loader

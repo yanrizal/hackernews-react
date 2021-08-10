@@ -11,21 +11,23 @@ const Comment = () => {
   const [loading, setLoading] = useState(true)
   const [commentData, setCommentData] = useState([])
   const myparam = useParams();
-  //const myparam = location.state;
 
   useEffect(() => {
-    fetchData()
-  },[newsStore])
-
-  const fetchData = async () => {
-    setLoading(true)
-    await newsStore.getStory(myparam.id)
-    if (newsStore.state === 'done_get_story') {
-      const data = await Promise.all(newsStore.story.kids.map(getDataComment));
-      setLoading(false)
-      setCommentData(data)
+    const fetchData = async () => {
+      setLoading(true)
+      // get story detail data
+      await newsStore.getStory(myparam.id)
+      if (newsStore.state === 'done_get_story') {
+        // fetch all comment data including the child comment
+        const data = await Promise.all(newsStore.story.kids.map(getDataComment));
+        setLoading(false)
+        setCommentData(data)
+      }
     }
-  }
+    fetchData()
+  },[newsStore, myparam])
+
+  
 
   const getDataComment = async (id) => {
    const data = await commentStore.getComment(id)
@@ -44,7 +46,7 @@ const Comment = () => {
           hour: 'numeric',
           minute: 'numeric'
         })}</p>
-           <p className="text-sm">{ ReactHtmlParser(item.text) }</p>
+           <div className="text-sm">{ ReactHtmlParser(item.text) }</div>
            {item.comments &&
            <Comments data={item.comments} />
            }
@@ -57,7 +59,7 @@ const Comment = () => {
    <ul className="list-disc ml-10">
    {data.map((item) => {
       return (
-        <NestedComment item={item} />
+        <NestedComment item={item} key={item.id}/>
       )
     })}
    </ul>
